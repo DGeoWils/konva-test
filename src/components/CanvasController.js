@@ -6,7 +6,9 @@ import ColoredRect from './ColoredRect';
 export default class CanvasController extends React.Component {
   static defaultProps = {
     testVolume: 4000,
-    initialScale: 20
+    initialScale: 20,
+    maxScale: 45,
+    minScale: 10
   };
 
   constructor(props) {
@@ -19,21 +21,21 @@ export default class CanvasController extends React.Component {
   _handleZoom = (arg) => {
     let newZoom = this.state.scale;
     if(typeof arg === 'string') {
-      if(arg === 'in' && newZoom < 20) {
+      if(arg === 'in' && newZoom < this.props.maxScale) {
         newZoom++;
       }
 
-      if(arg === 'out' && newZoom > 0) {
+      if(arg === 'out' && newZoom > this.props.minScale) {
         newZoom--;
       }
     }
 
     if(typeof arg === 'number') {
-      if(arg < 0) {
-        newZoom = 0;
+      if(arg < this.props.minScale) {
+        newZoom = this.props.minScale;
       }
-      else if(arg > 0) {
-        newZoom = 20;
+      else if(arg > this.props.maxScale) {
+        newZoom = this.props.maxScale;
       }
       else {
         newZoom = arg;
